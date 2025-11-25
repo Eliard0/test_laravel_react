@@ -22,7 +22,13 @@ class TaskRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => 'required|string|min:5|max:200',
+            'title' => [
+                'required',
+                'string',
+                'min:5',
+                'max:200',
+                'regex:~[a-zA-Z]~'
+            ],
             'completed' => 'sometimes|boolean',
         ];
     }
@@ -32,6 +38,7 @@ class TaskRequest extends FormRequest
             'title.required' => 'Campo titulo é obrigatorio',
             'title.min' => 'O campo titulo tem ser maior que :min caracteres',
             'title.string' => 'O campo titulo tem ser do tipo string',
+            'title.regex' => 'O campo titulo deve conter pelomenos uma letra',
 
             'completed.boolean' => 'O campo completed tem ser do tipo booleano' 
         ];
