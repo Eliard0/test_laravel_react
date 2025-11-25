@@ -14,3 +14,9 @@ export async function getTasks(){
 
     return response.data
 }
+
+export async function createTask(task) {
+    const response = await api.post("/", task);
+
+    return response.data;
+}
