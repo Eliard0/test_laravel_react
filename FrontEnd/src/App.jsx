@@ -1,6 +1,4 @@
 import TaskList from './views/TaskList'
-// import './App.css'
-
 
 function App() {
 

@@ -5,11 +5,11 @@ const BASE_URL = "http://localhost:8000/api/tasks";
 const api = axios.create({
     baseURL: BASE_URL,
     headers: {
-        "Content-Type":"application/json",
+        "Content-Type": "application/json",
     }
 })
 
-export async function getTasks(){
+export async function getTasks() {
     const response = await api.get("/");
 
     return response.data
@@ -19,4 +19,16 @@ export async function createTask(task) {
     const response = await api.post("/", task);
 
     return response.data;
+}
+
+export async function updateTask(id, data) {
+    const response = await api.put(`/${id}`, data);
+
+    return response.data
+}
+
+export async function deleteTask(id) {
+    const response = await api.delete(`/${id}`);
+
+    return response.data
 }
