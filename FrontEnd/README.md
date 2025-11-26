@@ -1,16 +1,51 @@
-# React + Vite
+# FrontEnd
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## ⚙ Configuração do Projeto React
 
-Currently, two official plugins are available:
+Este projeto React consome a API Laravel do Back-End.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## React Compiler
+### 1️⃣ dentro container Front-End
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the ESLint configuration
+### 2️⃣ Instalando dependências
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Dentro do container, instale todas as dependências do projeto:
+
+```bash
+npm install
+```
+
+---
+
+### 3️⃣ Executando o projeto
+
+Para iniciar a aplicação:
+
+```bash
+npm run dev -- --host
+```
+> Sera disponibilizado uma url para acessa o sistema no navegador de sua preferencia.
+> Ele consumirá a API Laravel configurada no Back-End.
+> usamos -- --host para que o servidor de desenvolvimento do React seja acessível fora do container Docker, permitindo que você abra o sistema no navegador do seu computador.
+
+## 🏗 Arquitetura do Front-End
+
+A aplicação React segue uma estrutura **modular e organizada**, com separação clara entre componentes, páginas e serviços.
+
+### Estrutura geral de pastas:
+
+```
+FrontEnd/
+├── node_modules/          
+├── src/
+│   ├── components/        ← Componentes
+│   ├── services/          ← Serviços para consumir a API Laravel
+│   ├── views/             ← Views
+│   ├── App.jsx            ← Componente principal
+│   └── index.jsx          ← Ponto de entrada da aplicação
+└── package.json           ← Dependências do projeto
+
+```
