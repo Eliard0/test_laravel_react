@@ -3,14 +3,16 @@ import { getTasks, createTask, updateTask, deleteTask } from "../services/TaskSe
 import { FaTrash, FaEdit } from "react-icons/fa";
 
 import ModalRemoveTask from "../components/ModalRemoveTask";
+import ModalEditTask from "../components/ModalEditTask";
 
 export default function TaskList() {
-    const [task, setTask] = useState([]);
+    const [tasks, setTasks] = useState([]);
     const [title, setTitle] = useState("");
     const [errorTitleTask, setErrorTitleTask] = useState("");
     const [errorUpdateTask, setErrorUpdateTask] = useState("");
 
     const [taskDelete, setTaskDelete] = useState(null);
+    const [taskEdit, setTaskEdit] = useState(null);
 
     useEffect(() => {
         fetchTasks();
@@ -19,7 +21,7 @@ export default function TaskList() {
     async function fetchTasks() {
         try {
             const data = await getTasks();
-            setTask(data.data || data)
+            setTasks(data.data || data)
         } catch (err) {
             console.log("Error ao buscar dados", err)
         }
@@ -45,17 +47,29 @@ export default function TaskList() {
         }
     }
 
-    async function toggleCompleted(id, title, newStatus) {
+    async function updateTaskId(id, newTitle, newStatus) {
+        setErrorUpdateTask("");
+
+        if(!id) return 
+
         try {
             await updateTask(id, {
-                title: title,
+                title: newTitle,
                 completed: newStatus
-            })
-            fetchTasks()
+            });
+
+            fetchTasks();
+            setTaskEdit(null);
+            return true;
         } catch (err) {
-            setErrorUpdateTask(erro.response?.data?.message)
-            console.log("Erro ao atualiza status da tarefa", err.response?.data)
+            const errorMessage = err.response?.data?.message || "Erro ao salvar a tarefa.";
+            setErrorUpdateTask(errorMessage);
+            throw err;
         }
+    }
+
+    async function toggleCompleted(id, title, newStatus) {
+        await updateTaskId(id, title, newStatus);
     }
 
     async function removeTask() {
@@ -98,10 +112,10 @@ export default function TaskList() {
                 <p className="text-red-500 font-medium mb-4">{errorUpdateTask}</p>
             )}
 
-            {task.length > 0 &&
+            {tasks.length > 0 &&
 
                 <ul className="w-full max-w-xl bg-white shadow-md rounded-lg p-4 mt-32">
-                    {task.map((task) => (
+                    {tasks.map((task) => (
                         <li
                             key={task.id}
                             className="flex items-center justify-between border-b last:border-none py-3"
@@ -116,7 +130,10 @@ export default function TaskList() {
                             <span className="flex-1">{task.title}</span>
 
                             <div className="flex gap-4 text-gray-600">
-                                {/* <FaEdit className="cursor-pointer hover:text-blue-600" /> */}
+                                <button onClick={() => setTaskEdit(task)}>
+                                    <FaEdit className="cursor-pointer hover:text-blue-600" />
+                                </button>
+
                                 <button
                                     onClick={() => setTaskDelete(task.id)}
                                 >
@@ -132,6 +149,12 @@ export default function TaskList() {
                 task={taskDelete}
                 onConfirm={removeTask}
                 onCancel={() => setTaskDelete(null)}
+            />
+
+            <ModalEditTask
+                task={taskEdit}
+                onSave={(id, newTitle, newStatus) => updateTaskId(id, newTitle, newStatus)}
+                onCancel={() => setTaskEdit(null)}
             />
         </div>
     );
