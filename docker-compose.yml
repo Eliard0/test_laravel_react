@@ -2,15 +2,16 @@ services:
   frontend:
     build:
       context: ./FrontEnd
-    container_name: todolist-frontend
+    container_name: frontend
     ports:
       - "5173:5173"
     volumes:
       - ./FrontEnd:/app
   backend-php:
     build:
-      context: ./BackEnd/php
-    container_name: backend-php
+      context: ./BackEnd
+      dockerfile: php/Dockerfile
+    container_name: backend
     volumes:
       - ./BackEnd/application:/var/www/application
     depends_on:

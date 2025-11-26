@@ -6,10 +6,14 @@ RUN apt-get update && apt-get install -y \
 
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
-RUN composer install
+WORKDIR /var/www/application
 
-RUN chown -R www-data:www-data /var/www/application \
-    && chmod -R 775 /var/www/application/storage /var/www/application/bootstrap/cache
+COPY ../application /var/www/application
+
+RUN composer install --no-interaction --prefer-dist
+
+RUN chown -R www-data:www-data /var/www/application/storage \
+    && chown -R www-data:www-data /var/www/application/bootstrap/cache
 
 EXPOSE 9000
 CMD ["php-fpm"]
