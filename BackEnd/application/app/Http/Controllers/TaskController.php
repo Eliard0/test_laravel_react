@@ -9,7 +9,10 @@ use Illuminate\Support\Facades\DB;
 class TaskController extends Controller
 {
    public function index(){
-        $tasks = DB::table('Tasks')->select('id', 'title', 'completed')->get();
+        $tasks = DB::table('Tasks')
+        ->select('id', 'title', 'completed')
+        ->orderBy('created_at', 'Desc')
+        ->get();
 
         if($tasks->isEmpty()){
             return response()->json([
