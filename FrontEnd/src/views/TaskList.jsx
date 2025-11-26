@@ -2,11 +2,15 @@ import { useEffect, useState } from "react";
 import { getTasks, createTask, updateTask, deleteTask } from "../services/TaskService";
 import { FaTrash, FaEdit } from "react-icons/fa";
 
+import ModalRemoveTask from "../components/ModalRemoveTask";
+
 export default function TaskList() {
     const [task, setTask] = useState([]);
     const [title, setTitle] = useState("");
     const [errorTitleTask, setErrorTitleTask] = useState("");
-    const [errorUpdateTask, setErrorUpdateTask] = useState("")
+    const [errorUpdateTask, setErrorUpdateTask] = useState("");
+
+    const [taskDelete, setTaskDelete] = useState(null);
 
     useEffect(() => {
         fetchTasks();
@@ -50,17 +54,20 @@ export default function TaskList() {
             fetchTasks()
         } catch (err) {
             setErrorUpdateTask(erro.response?.data?.message)
-            console.log("Erro ao atualiza", err.response?.data)
+            console.log("Erro ao atualiza status da tarefa", err.response?.data)
         }
     }
 
-    async function removeTaskId(id) {
+    async function removeTask() {
         try {
-            await deleteTask(id)
+            if (!taskDelete) return;
+
+            await deleteTask(taskDelete)
+            setTaskDelete(null)
             fetchTasks();
         } catch (err) {
             setErrorUpdateTask(erro.response?.data?.message)
-            console.log("Erro ao deletar", err.response?.data)
+            console.log("Erro ao deletar tarefa", err.response?.data)
         }
     }
 
@@ -111,7 +118,7 @@ export default function TaskList() {
                             <div className="flex gap-4 text-gray-600">
                                 {/* <FaEdit className="cursor-pointer hover:text-blue-600" /> */}
                                 <button
-                                    onClick={() => removeTaskId(task.id)}
+                                    onClick={() => setTaskDelete(task.id)}
                                 >
                                     <FaTrash className="cursor-pointer hover:text-red-600" />
                                 </button>
@@ -119,8 +126,13 @@ export default function TaskList() {
                         </li>
                     ))}
                 </ul>
-
             }
+
+            <ModalRemoveTask
+                task={taskDelete}
+                onConfirm={removeTask}
+                onCancel={() => setTaskDelete(null)}
+            />
         </div>
     );
 }
