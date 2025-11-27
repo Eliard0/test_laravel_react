@@ -27,7 +27,8 @@ class TaskRequest extends FormRequest
                 'string',
                 'min:5',
                 'max:200',
-                'regex:~[a-zA-Z]~'
+                'regex:~[a-zA-Z]~',
+                'unique:tasks' . ($this->task ? ',' . $this->task->id : '')
             ],
             'completed' => 'sometimes|boolean',
         ];
@@ -35,12 +36,13 @@ class TaskRequest extends FormRequest
 
     public function messages(){
         return [
-            'title.required' => 'Campo titulo é obrigatorio',
-            'title.min' => 'O campo titulo tem ser maior que :min caracteres',
-            'title.string' => 'O campo titulo tem ser do tipo string',
-            'title.regex' => 'O campo titulo deve conter pelomenos uma letra',
+            'title.required' => 'Campo titulo é obrigatorio.',
+            'title.min' => 'O campo titulo tem ser maior que :min caracteres.',
+            'title.string' => 'O campo titulo tem ser do tipo string.',
+            'title.regex' => 'O campo titulo deve conter pelomenos uma letra.',
+            'title.unique' => 'Esta Tarefa ja foi registrada.',
 
-            'completed.boolean' => 'O campo completed tem ser do tipo booleano' 
+            'completed.boolean' => 'O campo completed tem ser do tipo booleano.' 
         ];
     }
 }
