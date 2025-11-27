@@ -127,7 +127,7 @@ export default function TaskList() {
                                 onChange={() => toggleCompleted(task.id, task.title, !task.completed)}
                             />
 
-                            <span className="flex-1">{task.title}</span>
+                            <span className="flex-1 break-words whitespace-normal max-h-14 overflow-hidden">{task.title}</span>
 
                             <div className="flex gap-4 text-gray-600">
                                 <button onClick={() => setTaskEdit(task)}>
