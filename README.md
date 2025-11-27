@@ -61,7 +61,7 @@ git clone https://github.com/Eliard0/test_laravel_react.git
 cd test_laravel_react
 
 # Suba ambos os projetos via Docker
-docker-compose up --build
+docker-compose up --build -d
 ```
 
 
